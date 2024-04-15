@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 import styles from "../Styles/Posts.module.css"
-import postsStore from "../stores/posts-store";
 import { observer } from "mobx-react-lite";
+import { useStores } from "../stores/root-store-context";
 
 const Posts = observer(() => {
-    const { posts, getPostsAction } = postsStore
+    // const { posts, getPostsAction } = postsStore
+    const { post } = useStores()
     useEffect(() => {
-        getPostsAction()
+        post.getPostsAction()
     }, [])
-    console.log(posts)
-    if(!posts){
+    console.log(post.posts)
+    if(!post.posts){
         return null
     }
 
-    return posts.case({
+    return post.posts.case({
         pending: () =>  <h1>Loading...</h1>,
         rejected: () => <h1>Error</h1>,
         fulfilled: (value) => (
